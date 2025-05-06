@@ -1,0 +1,20 @@
+{
+  "name": "example-analytics-player-module",
+  "version": "1.0.0",
+  "description": "Example Analytics Player Module",
+  "main": "example.js",
+  "author": "uStudio Developers <dev@ustudio.com>",
+  "license": "Unlicensed",
+  "private": true,
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "restoreMocks": true,
+    "testEnvironment": "jsdom"
+  }
+}

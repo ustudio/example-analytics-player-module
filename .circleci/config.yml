@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  artifacts: ustudio/backup-artifacts@1.0.3
+
 jobs:
   test:
     docker:
@@ -31,6 +34,15 @@ jobs:
           name: Lint Source
           command: |
             yarn lint
+
+      - run:
+          name: Create Artifact
+          command: |
+            mkdir -p dist
+            cp example.js dist/example-${CIRCLE_BRANCH//\//-}-${CIRCLE_BUILD_NUM}.js
+
+      - artifacts/backup_artifacts:
+          path: dist
 
 workflows:
   version: 2

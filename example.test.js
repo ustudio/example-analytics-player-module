@@ -28,6 +28,7 @@ describe('AnalyticsExample player module', () => {
   describe('when registered', () => {
     let config;
     let events;
+    let videos;
 
     beforeEach(() => {
       config = {

@@ -44,8 +44,8 @@ describe('AnalyticsExample player module', () => {
       };
 
       videos = [
-        {id: 'VIDEO-UID'},
-        {id: 'OTHER-VIDEO'}
+        {id: 'VIDEO-UID', duration: 1000},
+        {id: 'OTHER-VIDEO', duration: 300}
       ];
 
       require('./example.js');
@@ -55,8 +55,10 @@ describe('AnalyticsExample player module', () => {
       window.uStudio.uStudioCore.instance.registerModule.mock.calls[0][0].initialize(
         config, events, videos);
 
-      expect(events.subscribe).toHaveBeenCalledTimes(1);
+      expect(events.subscribe).toHaveBeenCalledTimes(3);
       expect(events.subscribe).toHaveBeenCalledWith('analytics-event', expect.any(Function));
+      expect(events.subscribe).toHaveBeenCalledWith('Playlist.videoSelected', expect.any(Function));
+      expect(events.subscribe).toHaveBeenCalledWith('Player.durationchange', expect.any(Function));
     });
 
     describe('when initialized', () => {
@@ -80,7 +82,30 @@ describe('AnalyticsExample player module', () => {
         });
 
         expect(console.log).toHaveBeenCalledTimes(1);
-        expect(console.log).toHaveBeenCalledWith('CONSUMED', 'VIDEO-UID', 'DESTINATION-UID', 1);
+        expect(console.log).toHaveBeenCalledWith(
+          'Consumed 1% (10 seconds) of video VIDEO-UID on destination DESTINATION-UID');
+      });
+
+      it('reports time consumed based on updated video duration after its duration changes', () => {
+        events.subscribe.mock.calls[1][1]({video: {id: 'VIDEO-UID'}});
+        events.subscribe.mock.calls[2][1]({duration: 500});
+
+        events.subscribe.mock.calls[0][1]({
+          event: 'progress',
+          tags: {
+            video_uid: 'VIDEO-UID',
+            destination_uid: 'DESTINATION-UID',
+            other: 'TAGS'
+          },
+          parameters: {
+            progress: 42,
+            other: 'PARAMETERS'
+          }
+        });
+
+        expect(console.log).toHaveBeenCalledTimes(1);
+        expect(console.log).toHaveBeenCalledWith(
+          'Consumed 1% (5 seconds) of video VIDEO-UID on destination DESTINATION-UID');
       });
 
       it('does not report consumed when other analytics-event event is received', () => {
@@ -177,7 +202,8 @@ describe('AnalyticsExample player module', () => {
         });
 
         expect(console.log).toHaveBeenCalledTimes(1);
-        expect(console.log).toHaveBeenCalledWith('CONSUMED', 'VIDEO-UID', 'DESTINATION-UID', 2);
+        expect(console.log).toHaveBeenCalledWith(
+          'Consumed 2% (20 seconds) of video VIDEO-UID on destination DESTINATION-UID');
       });
 
       it('reports consumed when progress value is unique for different video', () => {
@@ -209,7 +235,8 @@ describe('AnalyticsExample player module', () => {
         });
 
         expect(console.log).toHaveBeenCalledTimes(1);
-        expect(console.log).toHaveBeenCalledWith('CONSUMED', 'OTHER-VIDEO', 'DESTINATION-UID', 1);
+        expect(console.log).toHaveBeenCalledWith(
+          'Consumed 1% (3 seconds) of video OTHER-VIDEO on destination DESTINATION-UID');
       });
     });
   });

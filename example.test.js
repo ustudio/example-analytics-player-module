@@ -67,7 +67,7 @@ describe('AnalyticsExample player module', () => {
           config, events, videos);
       });
 
-      it('reports consumed when unique "progress" analytics-event is received', () => {
+      it('reports consumption when unique "progress" analytics-event is received', () => {
         events.subscribe.mock.calls[0][1]({
           event: 'progress',
           tags: {
@@ -86,7 +86,7 @@ describe('AnalyticsExample player module', () => {
           'Consumed 1% (10 seconds) of video VIDEO-UID on destination DESTINATION-UID');
       });
 
-      it('reports time consumed based on updated video duration after its duration changes', () => {
+      it('reports time consumption based on updated video duration after its duration changes', () => {
         events.subscribe.mock.calls[1][1]({video: {id: 'VIDEO-UID'}});
         events.subscribe.mock.calls[2][1]({duration: 500});
 
@@ -108,7 +108,7 @@ describe('AnalyticsExample player module', () => {
           'Consumed 1% (5 seconds) of video VIDEO-UID on destination DESTINATION-UID');
       });
 
-      it('does not report consumed when other analytics-event event is received', () => {
+      it('does not report consumption when other analytics-event event is received', () => {
         events.subscribe.mock.calls[0][1]({
           event: 'other',
           tags: {
@@ -125,7 +125,7 @@ describe('AnalyticsExample player module', () => {
         expect(console.log).not.toHaveBeenCalled();
       });
 
-      it('does not report consumed when progress is zero', () => {
+      it('does not report consumption when progress is zero', () => {
         events.subscribe.mock.calls[0][1]({
           event: 'progress',
           tags: {
@@ -142,7 +142,7 @@ describe('AnalyticsExample player module', () => {
         expect(console.log).not.toHaveBeenCalled();
       });
 
-      it('does not report consumed when progress value has already been recorded', () => {
+      it('does not report consumption when progress value has already been recorded', () => {
         events.subscribe.mock.calls[0][1]({
           event: 'progress',
           tags: {
@@ -173,7 +173,7 @@ describe('AnalyticsExample player module', () => {
         expect(console.log).not.toHaveBeenCalled();
       });
 
-      it('reports consumed when progress value is unique', () => {
+      it('reports consumption when progress value is unique', () => {
         events.subscribe.mock.calls[0][1]({
           event: 'progress',
           tags: {
@@ -206,7 +206,7 @@ describe('AnalyticsExample player module', () => {
           'Consumed 2% (20 seconds) of video VIDEO-UID on destination DESTINATION-UID');
       });
 
-      it('reports consumed when progress value is unique for different video', () => {
+      it('reports consumption when progress value is unique for different video', () => {
         events.subscribe.mock.calls[0][1]({
           event: 'progress',
           tags: {

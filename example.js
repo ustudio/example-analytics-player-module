@@ -45,7 +45,7 @@
   }
 
   function onDurationChange({duration}) {
-    // The player sends this event after it calculates a more precise video duration.
+    // The player sends this event after it calculates a more precise video duration than the one provided to initialize.
     videoDurations.set(currentVideo, duration);
   }
 

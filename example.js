@@ -18,7 +18,7 @@
     const {progress} = parameters;
 
     if (event !== 'progress' || progress === 0) {
-      // Ignore non-progress events and 0% progress events.
+      // Ignore non-progress events and 0% progress events, which are emitted before any of the video has been consumed.
       return;
     }
 

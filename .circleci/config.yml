@@ -1,0 +1,63 @@
+version: 2.1
+
+orbs:
+  artifacts: ustudio/backup-artifacts@1.0.3
+
+jobs:
+  test:
+    docker:
+      - image: cimg/node:22.15
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Install Dependencies
+          command: |
+            yarn
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Run Tests
+          command: |
+            yarn test
+
+      - run:
+          name: Lint Source
+          command: |
+            yarn lint
+
+  build:
+    docker:
+      - image: cimg/base:stable
+
+    steps:
+      - checkout
+
+      - run:
+          name: Create Artifact
+          command: |
+            mkdir -p dist
+            cp example.js dist/example-${CIRCLE_BRANCH//\//-}-${CIRCLE_BUILD_NUM}.js
+
+      - artifacts/backup_artifacts:
+          path: dist
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
+          context:
+            - backup-artifacts

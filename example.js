@@ -55,6 +55,10 @@
   window.uStudio.uStudioCore.instance.registerModule({
     name: 'AnalyticsExample',
     initialize: (configuration, events, videos) => {
+      /* This example player module does not use its configuration but, in a real module, the
+       * configuration could be used to pass backend API endpoint URLs and other settings that
+       * might change from one destination to another.
+       */
       for (const {id, duration} of videos) {
         uniqueProgressByVideo.set(id, new Set());
         videoDurations.set(id, duration);

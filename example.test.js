@@ -32,10 +32,6 @@ describe('AnalyticsExample player module', () => {
 
     beforeEach(() => {
       config = {
-        /* The example player module does not use its configuration but, in a real module, the
-         * configuration could be used to pass backend API endpoint URLs and other settings that
-         * might change from one destination to another.
-         */
         module: 'configuration'
       };
 

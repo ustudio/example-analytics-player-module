@@ -2,18 +2,21 @@ version: 2.1
 
 orbs:
   artifacts: ustudio/backup-artifacts@1.0.3
-
+parameters:
+  node_version:
+    type: string
+    default: "22.15"
 jobs:
   test:
     docker:
-      - image: cimg/node:22.15
+      - image: cimg/node:<< pipeline.parameters.node_version >>
 
     steps:
       - checkout
 
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies-node-<< pipeline.parameters.node_version >>-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install Dependencies
@@ -24,7 +27,7 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "yarn.lock" }}
+          key: v1-dependencies-node-<< pipeline.parameters.node_version >>-{{ checksum "yarn.lock" }}
 
       - run:
           name: Run Tests

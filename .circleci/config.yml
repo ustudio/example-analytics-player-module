@@ -5,7 +5,7 @@ orbs:
 parameters:
   node_version:
     type: string
-    default: "22.15"
+    default: "24.18"
 jobs:
   test:
     docker:

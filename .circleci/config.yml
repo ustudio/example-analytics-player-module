@@ -18,6 +18,7 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
+            corepack enable --install-directory ~/bin
             yarn
 
       - save_cache:
